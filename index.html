@@ -1,117 +1,1380 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sol Omuz Biyolojik Onarım Firewall v2.0</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @keyframes pulse-slow {
-            0%, 100__ { opacity: 1; transform: scale(1); }
-            50__ { opacity: 0.8; transform: scale(1.01); }
-        }
-        .animate-pulse-slow {
-            animation: pulse-slow 3s infinite ease-in-out;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Burak'ın İyileşme Defteri — Sol Omuz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F5F0E6;
+    --paper-warm: #EFE8DA;
+    --paper-deep: #E8DFCC;
+    --ink: #1C1814;
+    --ink-soft: #3A332A;
+    --ink-mute: #6B6256;
+    --ink-faint: #9B9082;
+    --clay: #B8593E;
+    --clay-deep: #8B3F2A;
+    --clay-soft: #D88B72;
+    --sage: #7A8471;
+    --sage-deep: #5C6655;
+    --amber: #C48947;
+    --olive: #8B9747;
+    --crimson: #A8453A;
+    --line: #D6CDB8;
+    --line-soft: #E3DAC4;
+  }
+  * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Geist', system-ui, sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+  body {
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(184, 89, 62, 0.04) 0%, transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(122, 132, 113, 0.04) 0%, transparent 40%);
+    min-height: 100vh;
+  }
+  .serif { font-family: 'Fraunces', Georgia, serif; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+  /* Masthead */
+  .masthead {
+    padding: 64px 0 40px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 48px;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 24px;
+  }
+  .title {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(40px, 7vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    font-variation-settings: 'opsz' 144;
+    margin-bottom: 16px;
+  }
+  .title em {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--clay);
+  }
+  .subtitle {
+    font-size: 15px;
+    color: var(--ink-mute);
+    max-width: 440px;
+    line-height: 1.6;
+  }
+
+  /* Section headers */
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* Hero status */
+  .hero {
+    margin-bottom: 64px;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  @media (min-width: 640px) {
+    .hero-grid { grid-template-columns: 1.3fr 1fr; align-items: end; }
+  }
+  .phase-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: clamp(28px, 4vw, 38px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .phase-meta {
+    font-size: 14px;
+    color: var(--ink-mute);
+    line-height: 1.55;
+    max-width: 340px;
+  }
+  .stat-block {
+    border-left: 1px solid var(--line);
+    padding-left: 24px;
+  }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 8px;
+  }
+  .stat-number {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 52px;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+  }
+  .stat-suffix { font-size: 18px; color: var(--ink-mute); margin-left: 4px; }
+  .stat-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-mute);
+    margin-top: 6px;
+  }
+
+  /* Progress arc */
+  .progress-section {
+    background: var(--paper-warm);
+    border: 1px solid var(--line-soft);
+    border-radius: 4px;
+    padding: 36px 32px;
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .progress-arc-wrap {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .arc-container {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    flex-shrink: 0;
+  }
+  .arc-svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .arc-bg { fill: none; stroke: var(--line); stroke-width: 2; }
+  .arc-fg {
+    fill: none;
+    stroke: var(--clay);
+    stroke-width: 2;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .arc-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .arc-pct {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 48px;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+  }
+  .arc-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-top: 8px;
+  }
+  .arc-text { flex: 1; min-width: 200px; }
+  .arc-text h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 22px;
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+  }
+  .arc-text p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Italy widget */
+  .italy-card {
+    background: var(--paper-warm);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 24px 28px;
+    margin-bottom: 48px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .italy-card.during {
+    background: linear-gradient(135deg, #B8593E 0%, #8B3F2A 100%);
+    color: var(--paper);
+    border-color: var(--clay-deep);
+  }
+  .italy-card.during .italy-status,
+  .italy-card.during .italy-detail { color: rgba(245, 240, 230, 0.85); }
+  .italy-flag {
+    font-size: 32px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .italy-body { flex: 1; min-width: 200px; }
+  .italy-status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 6px;
+  }
+  .italy-headline {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin: 0 0 6px;
+  }
+  .italy-detail {
+    font-size: 13px;
+    color: var(--ink-mute);
+    line-height: 1.5;
+  }
+
+  /* Today's plan */
+  .plan-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 48px;
+  }
+  @media (min-width: 640px) {
+    .plan-grid { grid-template-columns: 1fr 1fr; }
+  }
+  .plan-col {
+    background: var(--paper);
+    padding: 28px;
+  }
+  .plan-col h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0 0 16px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .plan-col h4 .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+  .plan-col.do h4 .dot { background: var(--sage); }
+  .plan-col.dont h4 .dot { background: var(--crimson); }
+  .plan-col ul { list-style: none; padding: 0; margin: 0; }
+  .plan-col li {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .plan-col li:last-child { border-bottom: none; }
+  .plan-col li strong {
+    color: var(--ink);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  /* Check-in form */
+  .checkin {
+    background: var(--paper-warm);
+    border: 1px solid var(--line-soft);
+    border-radius: 4px;
+    padding: 32px;
+    margin-bottom: 48px;
+  }
+  .checkin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .checkin-title {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .checkin-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-mute);
+  }
+  .field { margin-bottom: 24px; }
+  .field-label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 12px;
+  }
+  .pain-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .pain-slider {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    background: linear-gradient(to right, var(--sage), var(--amber), var(--crimson));
+    border-radius: 2px;
+    outline: none;
+  }
+  .pain-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .pain-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .pain-value {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--ink);
+    min-width: 40px;
+    text-align: right;
+  }
+  .toggle-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .toggle-btn {
+    flex: 1;
+    min-width: 100px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    color: var(--ink-mute);
+    padding: 10px 16px;
+    border-radius: 3px;
+    font-family: 'Geist', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .toggle-btn:hover { border-color: var(--ink-mute); }
+  .toggle-btn.active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+  .notes-input {
+    width: 100%;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 12px 14px;
+    font-family: 'Geist', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    resize: vertical;
+    min-height: 70px;
+  }
+  .notes-input:focus { outline: none; border-color: var(--clay); }
+  .save-btn {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 12px 28px;
+    border-radius: 3px;
+    font-family: 'Geist', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .save-btn:hover { background: var(--clay-deep); }
+  .save-btn:disabled { background: var(--sage); cursor: default; }
+
+  /* Streak & history */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 48px;
+  }
+  .stat-tile {
+    background: var(--paper);
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .stat-tile .num {
+    font-family: 'Fraunces', serif;
+    font-size: 34px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .stat-tile .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-top: 8px;
+  }
+
+  /* Calendar */
+  .calendar {
+    background: var(--paper-warm);
+    border: 1px solid var(--line-soft);
+    border-radius: 4px;
+    padding: 28px;
+    margin-bottom: 48px;
+  }
+  .cal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 20px;
+  }
+  .cal-title {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0;
+  }
+  .cal-legend {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-mute);
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .cal-legend span { display: flex; align-items: center; gap: 6px; }
+  .cal-legend .sw {
+    width: 10px; height: 10px; border-radius: 2px; display: inline-block;
+  }
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(28px, 1fr));
+    gap: 4px;
+  }
+  .cal-cell {
+    aspect-ratio: 1;
+    background: var(--paper);
+    border: 1px solid var(--line-soft);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-faint);
+    position: relative;
+  }
+  .cal-cell.future { opacity: 0.35; }
+  .cal-cell.today {
+    border: 1.5px solid var(--ink);
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .cal-cell.done {
+    background: var(--sage);
+    border-color: var(--sage-deep);
+    color: var(--paper);
+  }
+  .cal-cell.skipped {
+    background: var(--paper-deep);
+    color: var(--ink-mute);
+  }
+  .cal-cell.italy {
+    background: var(--clay-soft);
+    border-color: var(--clay);
+    color: var(--paper);
+  }
+  .cal-cell.italy.done {
+    background: var(--sage);
+    border-color: var(--clay);
+  }
+
+  /* Timeline */
+  .timeline {
+    margin-bottom: 48px;
+  }
+  .tl-track {
+    position: relative;
+    padding-left: 32px;
+  }
+  .tl-track::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: var(--line);
+  }
+  .tl-phase {
+    position: relative;
+    margin-bottom: 36px;
+  }
+  .tl-phase:last-child { margin-bottom: 0; }
+  .tl-dot {
+    position: absolute;
+    left: -32px;
+    top: 4px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 1.5px solid var(--line);
+  }
+  .tl-phase.active .tl-dot {
+    background: var(--clay);
+    border-color: var(--clay);
+    box-shadow: 0 0 0 4px rgba(184, 89, 62, 0.15);
+  }
+  .tl-phase.past .tl-dot {
+    background: var(--ink-faint);
+    border-color: var(--ink-faint);
+  }
+  .tl-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 6px;
+  }
+  .tl-phase.active .tl-meta { color: var(--clay); }
+  .tl-name {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+  }
+  .tl-desc {
+    font-size: 13.5px;
+    color: var(--ink-mute);
+    line-height: 1.6;
+    margin: 0;
+  }
+  .tl-range {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+
+  /* Reference cards */
+  .ref-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  @media (min-width: 640px) {
+    .ref-grid { grid-template-columns: 1fr 1fr; }
+  }
+  .ref-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .ref-card summary {
+    padding: 18px 22px;
+    cursor: pointer;
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 500;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .ref-card summary::-webkit-details-marker { display: none; }
+  .ref-card summary::after {
+    content: '+';
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    color: var(--ink-mute);
+    transition: transform 0.2s;
+  }
+  .ref-card[open] summary::after { content: '−'; }
+  .ref-card .body {
+    padding: 0 22px 22px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+  }
+  .ref-card .body p { margin: 0 0 10px; }
+  .ref-card .body strong { color: var(--ink); font-weight: 500; }
+  .ref-card .body ul { padding-left: 18px; margin: 0; }
+  .ref-card .body li { margin-bottom: 6px; }
+
+  /* Emergency notice */
+  .emergency {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 4px;
+    padding: 24px 28px;
+    margin-bottom: 48px;
+  }
+  .emergency h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0 0 10px;
+    color: var(--clay-soft);
+  }
+  .emergency p {
+    font-size: 13.5px;
+    line-height: 1.6;
+    margin: 0;
+    color: rgba(245, 240, 230, 0.75);
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 32px 0 48px;
+    font-size: 12px;
+    color: var(--ink-faint);
+    line-height: 1.6;
+  }
+  footer .reset {
+    background: none;
+    border: 1px solid var(--line);
+    color: var(--ink-mute);
+    padding: 6px 12px;
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    cursor: pointer;
+    margin-top: 12px;
+  }
+  footer .reset:hover { border-color: var(--crimson); color: var(--crimson); }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 24px;
+    border-radius: 3px;
+    font-size: 13px;
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
+    z-index: 100;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+</style>
 </head>
-<body class="bg-gray-950 text-gray-100 min-h-screen font-sans antialiased selection:bg-indigo-500 selection:text-white">
+<body>
 
-    <div class="max-w-5xl mx-auto px-4 py-8">
-        <header class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-gray-800 pb-6 mb-8 gap-4">
-            <div>
-                <h1 class="text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">
-                    Sol Omuz Recovery OS v2.0
-                </h1>
-                <p class="text-gray-400 text-sm mt-1">Hasar Tarihi: 2 Mayıs 2026 | Yaş: 24 | Durum: Ameliyatsız Nadas Algoritması</p>
-            </div>
-            <div id="live-clock" class="text-xs font-mono bg-gray-900 border border-gray-800 px-3 py-1.5 rounded-md text-indigo-400 shadow-inner">
-                Sistem Zamanı Yükleniyor...
-            </div>
-        </header>
+<div class="container">
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            <div class="space-y-6">
-                <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 flex flex-col items-center justify-center text-center relative overflow-hidden shadow-lg">
-                    <div class="absolute inset-0 bg-indigo-500/5 mix-blend-color-dodge pointer-events-none"></div>
-                    <h2 class="text-xs font-semibold tracking-wider text-gray-400 uppercase mb-4">Mevcut Biyolojik Durum</h2>
-                    
-                    <div class="relative w-40 h-40 flex items-center justify-center">
-                        <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                            <circle class="text-gray-800" stroke-width="6" stroke="currentColor" fill="transparent" r="42" cx="50" cy="50"/>
-                            <circle id="progress-circle" class="text-blue-500 transition-all duration-1000 ease-out" stroke-width="6" stroke-dasharray="263.8" stroke-dashoffset="263.8" stroke-linecap="round" stroke="currentColor" fill="transparent" r="42" cx="50" cy="50"/>
-                        </svg>
-                        <div class="absolute flex flex-col items-center">
-                            <span id="pct-display" class="text-4xl font-black tracking-tight text-white">0%</span>
-                            <span id="days-display" class="text-xs text-blue-300 font-mono mt-0.5">0. Gün</span>
-                        </div>
-                    </div>
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <div class="eyebrow">Burak Mert · 23 yaş · 178 cm · 68 kg</div>
+    <h1 class="title serif">İyileşme<br><em>Defteri</em></h1>
+    <p class="subtitle">Sol omuz anterior çıkık. Bankart lezyonu + Hill-Sachs. Cerrahisiz takip protokolü, 2 Mayıs 2026 tarihli MR baz alınmıştır.</p>
+  </header>
 
-                    <div class="mt-6 w-full">
-                        <div id="caution-badge" class="px-3 py-2 rounded-lg text-xs font-bold tracking-widest uppercase animate-pulse-slow">
-                            Hesaplanıyor...
-                        </div>
-                    </div>
-                </div>
+  <!-- HERO STATUS -->
+  <section class="hero">
+    <div class="section-label">Bugünkü durum</div>
+    <div class="hero-grid">
+      <div>
+        <h2 class="phase-name serif" id="phase-name">—</h2>
+        <p class="phase-meta" id="phase-desc">—</p>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">Yaralanmanın</div>
+        <div class="stat-number" id="day-number">0<span class="stat-suffix">. günü</span></div>
+        <div class="stat-sub" id="day-date">—</div>
+      </div>
+    </div>
+  </section>
 
-                <div class="bg-gray-900 border border-gray-800 rounded-xl p-4 space-y-3 shadow-md">
-                    <div class="flex justify-between text-xs border-b border-gray-800 pb-2">
-                        <span class="text-gray-400">Kalan Sabır Süresi:</span>
-                        <span id="countdown-display" class="font-mono text-gray-200 font-bold">--- Gün</span>
-                    </div>
-                    <div class="flex justify-between text-xs border-b border-gray-800 pb-2">
-                        <span class="text-gray-400">Aktif Evre:</span>
-                        <span id="phase-name-display" class="text-blue-400 font-bold truncate max-w-[150px]">---</span>
-                    </div>
-                    <div class="flex justify-between text-xs">
-                        <span class="text-gray-400">Vücut İyileşme Modu:</span>
-                        <span class="text-green-400 font-bold flex items-center gap-1">
-                            <span class="w-2 h-2 rounded-full bg-green-500 animate-ping"></span> Hevesli (24 Yaş Altyapısı)
-                        </span>
-                    </div>
-                </div>
+  <!-- PROGRESS ARC -->
+  <section class="progress-section">
+    <div class="progress-arc-wrap">
+      <div class="arc-container">
+        <svg class="arc-svg" viewBox="0 0 100 100">
+          <circle class="arc-bg" cx="50" cy="50" r="44"/>
+          <circle class="arc-fg" id="arc-fg" cx="50" cy="50" r="44" stroke-dasharray="276.46" stroke-dashoffset="276.46"/>
+        </svg>
+        <div class="arc-center">
+          <div class="arc-pct serif" id="arc-pct">0%</div>
+          <div class="arc-label">Biyolojik güç</div>
+        </div>
+      </div>
+      <div class="arc-text">
+        <h3 class="serif" id="arc-headline">Erken dönem</h3>
+        <p id="arc-explainer">Cerrahisiz Bankart takibinde tam 1 yıllık iyileşmenin sonunda kasların omuzu stabilize ettiği "fonksiyonel" güç, ameliyatlı tedavinin yaklaşık %80'i kadardır. Bu eğri o gerçek hedefi takip eder; üst tavan %85'tir.</p>
+      </div>
+    </div>
+  </section>
 
-                <div class="bg-gradient-to-br from-gray-900 to-indigo-950/40 border border-indigo-900/50 rounded-xl p-4 text-xs">
-                    <div class="font-bold text-indigo-300 mb-1">🧠 Sistem Logu: 5 Yıl Önceki Kemik Çatlağı</div>
-                    <p class="text-gray-400 leading-relaxed">Kemik agresif kanlandığı için kendi kendine kusursuz kaynamıştı. Kıkırdak (Labrum) daha yavaş kanlanır ancak fit altyapın ve bu nadas disiplinin içerideki iyileşme hevesini maksimumda tutacak.</p>
-                </div>
-            </div>
+  <!-- ITALY ALERT -->
+  <div class="italy-card" id="italy-card">
+    <div class="italy-flag">🇮🇹</div>
+    <div class="italy-body">
+      <div class="italy-status" id="italy-status">İtalya planı</div>
+      <h3 class="italy-headline serif" id="italy-headline">—</h3>
+      <p class="italy-detail" id="italy-detail">—</p>
+    </div>
+  </div>
 
-            <div class="lg:col-span-2 space-y-6">
-                
-                <div id="italy-alert" class="hidden bg-gradient-to-r from-amber-950 to-orange-900/60 border border-amber-800/60 rounded-xl p-4 flex items-center gap-4 shadow-lg">
-                    <div class="p-2 bg-amber-900/50 text-amber-400 rounded-lg text-2xl">🇮🇹</div>
-                    <div>
-                        <h3 class="text-sm font-bold text-amber-200">Kritik Deployment: İtalya Seyahati Aktif!</h3>
-                        <p class="text-xs text-amber-400/90 mt-1 leading-relaxed">Şu an Roma veya Floransa sokaklarındasın. Sarkaç ve aktif hareketleri İstanbul'a kadar dondur. İnce örme omuzluğunu asla çıkarma, valizleri sağ elinle yönet!</p>
-                    </div>
-                </div>
+  <!-- TODAY'S PLAN -->
+  <section>
+    <div class="section-label">Bugünün protokolü</div>
+    <div class="plan-grid">
+      <div class="plan-col do">
+        <h4 class="serif"><span class="dot"></span> Bugün şunları yap</h4>
+        <ul id="plan-do"></ul>
+      </div>
+      <div class="plan-col dont">
+        <h4 class="serif"><span class="dot"></span> Bugün şunlardan kaçın</h4>
+        <ul id="plan-dont"></ul>
+      </div>
+    </div>
+  </section>
 
-                <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 shadow-lg">
-                    <h3 class="text-sm font-bold tracking-wider text-gray-300 uppercase mb-4 flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span> Yenilenen Kanlandırma & Defans Protokolü
-                    </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                        <div class="bg-gray-950 border border-gray-800 rounded-lg p-3">
-                            <div class="font-bold text-orange-400 mb-1">🔥 BUZ DEĞİL, SIFIR MALİYETLİ ISI</div>
-                            <p class="text-gray-400 leading-relaxed">Ağrı ve şişlik bittiği için buz devri kapandı. Hücrelere kan pompalamak için omuz çevresindeki kaslara günde 15 dk sıcak havlu/termofor uygula.</p>
-                        </div>
-                        <div class="bg-gray-950 border border-gray-800 rounded-lg p-3">
-                            <div class="font-bold text-green-400 mb-1">🥩 110g - 130g PROTEİN FİREWALL'U</div>
-                            <p class="text-gray-400 leading-relaxed">Yırtığın kendi kendine kaynaması için hammadde şart. Günde 3-4 yumurta, bol et/tavuk ve kolajen sentezi için her gün C Vitamini (Portakal/Kivi) tüket.</p>
-                        </div>
-                    </div>
-                </div>
+  <!-- DAILY CHECK-IN -->
+  <section class="checkin">
+    <div class="checkin-header">
+      <h3 class="checkin-title serif">Günün notu</h3>
+      <span class="checkin-date mono" id="checkin-date">—</span>
+    </div>
 
-                <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 shadow-lg">
-                    <h3 class="text-sm font-bold tracking-wider text-gray-300 uppercase mb-3">Egzersiz Modülleri & Kilometre Taşları</h3>
-                    
-                    <div class="space-y-3">
-                        <div id="module-1" class="border border-gray-800 rounded-lg p-4 bg-gray-950">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-xs font-bold text-blue-400 tracking-wider uppercase">Modül 1: Hareketsiz Kan Pompası (Şu An Aktif)</span>
-                                <span class="text-[10px] bg-blue-900/40 text-blue-300 px-2 py-0.5 rounded border border-blue-800">Günde 2 Kez</span>
-                            </div>
-                            <ul class="text-xs text-gray-400 space-y-2 list-disc pl-4 leading-relaxed">
-                                <li><strong>Kapı Çerçevesinde İzometrik Kasılma:</strong> Dirsek
+    <div class="field">
+      <label class="field-label">Ağrı düzeyi (0 = yok, 10 = dayanılmaz)</label>
+      <div class="pain-row">
+        <input type="range" min="0" max="10" value="0" class="pain-slider" id="pain-slider">
+        <div class="pain-value serif" id="pain-value">0</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Egzersizler yapıldı mı?</label>
+      <div class="toggle-row" id="exercise-toggle">
+        <button class="toggle-btn" data-val="yes">Evet, hepsini yaptım</button>
+        <button class="toggle-btn" data-val="partial">Kısmen</button>
+        <button class="toggle-btn" data-val="no">Hayır</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Protein hedefine ulaştın mı? (≈110-130 g)</label>
+      <div class="toggle-row" id="protein-toggle">
+        <button class="toggle-btn" data-val="yes">Evet</button>
+        <button class="toggle-btn" data-val="no">Hayır</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Bugün dair not (opsiyonel)</label>
+      <textarea class="notes-input" id="notes-input" placeholder="Hareket açıklığı nasıldı? Bir şey takıldı mı? Tatil notları?"></textarea>
+    </div>
+
+    <button class="save-btn" id="save-btn">Kaydet</button>
+  </section>
+
+  <!-- STATS -->
+  <section>
+    <div class="section-label">Genel istatistik</div>
+    <div class="stats-row">
+      <div class="stat-tile">
+        <div class="num serif" id="stat-streak">0</div>
+        <div class="lbl">Günlük seri</div>
+      </div>
+      <div class="stat-tile">
+        <div class="num serif" id="stat-total">0</div>
+        <div class="lbl">Toplam kayıt</div>
+      </div>
+      <div class="stat-tile">
+        <div class="num serif" id="stat-avg-pain">—</div>
+        <div class="lbl">Ortalama ağrı</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALENDAR -->
+  <section class="calendar">
+    <div class="cal-header">
+      <h3 class="cal-title serif">Son 8 hafta</h3>
+      <div class="cal-legend">
+        <span><span class="sw" style="background: var(--sage);"></span>Yapıldı</span>
+        <span><span class="sw" style="background: var(--paper-deep);"></span>Atlandı</span>
+        <span><span class="sw" style="background: var(--clay-soft);"></span>İtalya</span>
+      </div>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section class="timeline">
+    <div class="section-label">12 aylık iyileşme yolu</div>
+    <div class="tl-track" id="tl-track"></div>
+  </section>
+
+  <!-- REFERENCE -->
+  <section>
+    <div class="section-label">Hızlı referans</div>
+    <div class="ref-grid">
+      <details class="ref-card">
+        <summary class="serif">Beslenme hedefleri</summary>
+        <div class="body">
+          <p><strong>Protein:</strong> Günde 110-130 g (kilo başına ~1.7 g).</p>
+          <p><strong>Pratik dağılım:</strong> Kahvaltı: 3-4 yumurta + peynir/yoğurt (~35 g). Öğle: 180 g et/tavuk/balık (~40 g). Akşam: 180 g et/tavuk/balık (~40 g). Ara öğün: 1 kase yoğurt veya 1 ölçek whey (~20 g).</p>
+          <p><strong>D vitamini:</strong> Türkiye'de çoğu insanda düşük. Kanda 25-OH D baktır; düşükse D3 takviyesi.</p>
+          <p><strong>C vitamini:</strong> Kollajen sentezi için kritik. Günde 1-2 portakal/kivi.</p>
+          <p><strong>Çinko, magnezyum:</strong> Kırmızı et, kabak çekirdeği, kuruyemiş.</p>
+          <p><strong>Su:</strong> Günde 2.5-3 L.</p>
+        </div>
+      </details>
+
+      <details class="ref-card">
+        <summary class="serif">Sigara, alkol, uyku</summary>
+        <div class="body">
+          <p><strong>Sigara:</strong> Bu yıl boyunca tamamen bırak. Bağ dokusu iyileşmesini ciddi yavaşlatır.</p>
+          <p><strong>Alkol:</strong> İlk 3 ay minimum. Kollajen sentezini bozar.</p>
+          <p><strong>Uyku:</strong> Günde 7-9 saat. İyileşme uyku sırasında olur.</p>
+          <p><strong>Uyku pozisyonu:</strong> Sırtüstü tercih. Yan yatacaksan sağlam tarafa yat, kollar arasına yastık.</p>
+        </div>
+      </details>
+
+      <details class="ref-card">
+        <summary class="serif">İzometrik egzersiz tarifi</summary>
+        <div class="body">
+          <p>Kapı çerçevesinin yanına dur. Dirsek 90 derece bükülü, vücuda yapışık.</p>
+          <p><strong>1. İçe rotasyon:</strong> Yumruğu duvara doğru bastır. 5 sn bastır, 10 sn dinlen. 10 tekrar.</p>
+          <p><strong>2. Dışa rotasyon:</strong> Elin sırtını duvara bastır. 5 sn, 10 tekrar.</p>
+          <p><strong>3. Öne kaldırma:</strong> Yumruğu öne doğru duvara bastır. 5 sn, 10 tekrar.</p>
+          <p><strong>4. Yana kaldırma:</strong> Yumruğu yana duvara bastır. 5 sn, 10 tekrar.</p>
+          <p>Günde 2 kez. Omuz <em>hareket etmez</em>, sadece kaslar çalışır.</p>
+        </div>
+      </details>
+
+      <details class="ref-card">
+        <summary class="serif">Sarkaç ve duvar egzersizleri</summary>
+        <div class="body">
+          <p><strong>Sarkaç (3. haftadan sonra):</strong> Masaya sağlam elinle tutun, gövdeni öne eğ. Yaralı kol serbest sarksın. Gövde hareketiyle kol küçük daireler çizsin. Her yön 10-15 daire. Günde 2 kez.</p>
+          <p><strong>Duvarda parmak yürütme:</strong> Duvara dön, parmaklarını duvara koy, örümcek gibi yukarı tırmandır. Ağrısız noktada dur, 3 sn tut, geri in. Günde 2 kez, 8-10 tekrar.</p>
+          <p><strong>Pasif öne kaldırma:</strong> Sırtüstü yat. Sağlam elinle yaralı kolun bileğini tut, yaralı kolu başının üzerine yavaşça kaldır. 10 tekrar, günde 2 kez.</p>
+        </div>
+      </details>
+
+      <details class="ref-card">
+        <summary class="serif">Theraband egzersizleri (6+ hafta)</summary>
+        <div class="body">
+          <p>Orta sertlikte bir direnç lastiği yeterli.</p>
+          <p><strong>Dış rotasyon (en önemli):</strong> Lastiği kapı koluna bağla. Dirsek 90° bükülü ve vücuda yapışık. Önkolu vücuttan dışa çevir. 3 set × 15 tekrar.</p>
+          <p><strong>İç rotasyon:</strong> Aynı kurulum, ters yön. 3 set × 15.</p>
+          <p><strong>Kürek çekme:</strong> Lastik önde, kürek çeker gibi dirsekleri vücuda çek, kürek kemiklerini sık. 3 set × 15.</p>
+          <p><strong>Skapula sıkıştırma:</strong> Lastiksiz, gün boyu. Otururken bile yap.</p>
+          <p>Günaşırı çalış, her gün değil. Kaslara onarım için ara gün lazım.</p>
+        </div>
+      </details>
+
+      <details class="ref-card">
+        <summary class="serif">Tehlikeli pozisyonlar</summary>
+        <div class="body">
+          <p>İlk 6 ay özellikle kaçın:</p>
+          <ul>
+            <li>Kol yukarıda + dışa dönük ("teslim ol" pozisyonu) — yeniden çıkık çoğunlukla burada olur</li>
+            <li>Üst raftan bir şey alma</li>
+            <li>Saç tarama hareketi (özellikle hızlı)</li>
+            <li>Araba kullanırken arkaya bakmak için kolla destek alma</li>
+            <li>Bench press, omuz pressi, dips, şınav, pull-up</li>
+            <li>Yüzme (kelebek, sırtüstü, kurbağa)</li>
+            <li>Temaslı sporlar (futbol, basketbol)</li>
+            <li>Kayak, snowboard, motosiklet — düşme riski</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- EMERGENCY -->
+  <div class="emergency">
+    <h4 class="serif">Acil işaretler</h4>
+    <p>Elde uyuşma/karıncalanma artıyorsa, parmaklar moralıyor, kontrolsüz ağrı veya omuzun tekrar yerinden çıktığı hissi varsa — kendin yerine oturtmaya çalışma, hemen acile git. Tekrar çıkık olursa ameliyat seçeneğini yeniden konuşmak gerekir.</p>
+  </div>
+
+  <footer>
+    Bu defter Burak için hazırlanmıştır. Tüm veriler bu tarayıcıda yerel olarak saklanır, hiçbir yere gönderilmez. Tarayıcıyı temizlersen kayıtlar silinir. Tıbbi tavsiye yerine geçmez — Dr. Murat Önder ve fizik tedavi takibi ile birlikte kullan.<br>
+    <button class="reset" id="reset-btn">Tüm kayıtları sil</button>
+  </footer>
+
+</div>
+
+<div class="toast" id="toast">Kaydedildi</div>
+
+<script>
+(() => {
+  // ===== CONFIG =====
+  const CONFIG = {
+    injuryDate: '2026-05-02',
+    italyStart: '2026-05-22',
+    italyEnd:   '2026-05-29',
+    targetDays: 365,
+    storageKey: 'burak-omuz-defteri-v1'
+  };
+
+  // ===== STATE =====
+  let state = loadState();
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(CONFIG.storageKey);
+      return raw ? JSON.parse(raw) : { logs: {} };
+    } catch { return { logs: {} }; }
+  }
+  function saveState() {
+    try { localStorage.setItem(CONFIG.storageKey, JSON.stringify(state)); } catch {}
+  }
+
+  // ===== DATE HELPERS =====
+  function today() { const d = new Date(); d.setHours(0,0,0,0); return d; }
+  function parseDate(s) { return new Date(s + 'T00:00:00'); }
+  function ymd(d) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const day = String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${day}`;
+  }
+  function daysBetween(a, b) {
+    return Math.floor((b - a) / (1000*60*60*24));
+  }
+  function trFormatDate(d) {
+    const months = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+    return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+  }
+
+  const t = today();
+  const injuryDate = parseDate(CONFIG.injuryDate);
+  const italyStart = parseDate(CONFIG.italyStart);
+  const italyEnd   = parseDate(CONFIG.italyEnd);
+  const currentDay = Math.max(0, daysBetween(injuryDate, t));
+
+  // ===== BIOLOGICAL RECOVERY MODEL =====
+  // S-shaped curve fitted to Bankart conservative outcomes:
+  // Days 0-21 (immobilization): 0 -> 8%
+  // Days 21-42 (early ROM): 8 -> 22%
+  // Days 42-90 (synthesis): 22 -> 50%
+  // Days 90-180 (fiber alignment + strengthening): 50 -> 72%
+  // Days 180-365 (maturation): 72 -> 85%
+  function calcRecovery(day) {
+    if (day <= 0) return 0;
+    if (day <= 21) return (day / 21) * 8;
+    if (day <= 42) return 8 + ((day - 21) / 21) * 14;
+    if (day <= 90) return 22 + ((day - 42) / 48) * 28;
+    if (day <= 180) return 50 + ((day - 90) / 90) * 22;
+    if (day <= 365) return 72 + ((day - 180) / 185) * 13;
+    return 85;
+  }
+
+  // ===== PHASE DEFINITIONS =====
+  const phases = [
+    {
+      id: 1,
+      name: 'Sabitleme dönemi',
+      meta: 'Kapsül ve labrum iltihabı yatışıyor. Vücut hasarı tarıyor, Tip-III esnek kolajen örgüsü başlıyor. Bu pamuk ipliği inceliğinde.',
+      range: [0, 21],
+      rangeLabel: '0 — 21. gün',
+      do: [
+        { t: 'Askı', d: 'Doktor önerdiği süre boyunca takılı (≈3 hafta).' },
+        { t: 'Buz', d: 'İlk 7-10 gün, günde 3-4 kez 15-20 dk.' },
+        { t: 'Sarkaç egzersizleri', d: '14. günden sonra, gövdeni öne eğip kolun serbest sarkması.' },
+        { t: 'Uyku', d: 'Sırtüstü veya sağlam tarafa, kol vücuda yakın.' }
+      ],
+      dont: [
+        { t: 'Aktif kol kaldırma', d: 'Hiçbir yöne, askıdan çıkarmak için bile.' },
+        { t: 'Yana açık + dışa rotasyon', d: 'En riskli pozisyon. Yeniden çıkık burada olur.' },
+        { t: 'Ağırlık taşıma', d: 'Sol kolla çanta, valiz, market torbası yok.' },
+        { t: 'Spor', d: 'Alt vücut bile şimdilik dikkatli — zıplama, koşu yok.' }
+      ]
+    },
+    {
+      id: 2,
+      name: 'Hareket geri kazanımı',
+      meta: 'Bursa sıvısı çekiliyor, eklem kapsülü tekrar yağlanıyor. İzometrik kaslar uyanıyor, hareket açıklığı yavaş yavaş geri geliyor.',
+      range: [21, 42],
+      rangeLabel: '3 — 6. hafta',
+      do: [
+        { t: 'Sarkaç', d: 'Günde 2 kez, her yön 10-15 daire.' },
+        { t: 'Duvarda parmak yürütme', d: 'Günde 2 kez, ağrısız noktaya kadar.' },
+        { t: 'İzometrik egzersizler', d: 'Kapıda 4 yön, günde 2 kez (referans bölümüne bak).' },
+        { t: 'Pasif öne kaldırma', d: 'Sağlam elin yaralı kolu kaldırır, sırtüstü.' }
+      ],
+      dont: [
+        { t: 'Aktif dışa rotasyon', d: 'Henüz değil. Pasif olarak bile sınırlı.' },
+        { t: 'Theraband / ağırlık', d: 'Henüz erken. 6. haftadan sonra.' },
+        { t: 'Üst raf, saç tarama', d: 'Kol omuz hizasının üstüne çıkmasın.' },
+        { t: 'Tek elle araç kullanma', d: 'Direksiyona ani manevra omzu zorlar.' }
+      ]
+    },
+    {
+      id: 3,
+      name: 'Kuvvetlendirme — temel',
+      meta: 'Tip-I kuvvetli kolajen lifleri yerleşiyor. Rotator manşet ve skapula kasları aktif çalıştırılarak yeni "kas korsesi" kuruluyor.',
+      range: [42, 90],
+      rangeLabel: '6 hafta — 3. ay',
+      do: [
+        { t: 'Theraband dış rotasyon', d: 'En önemli egzersiz. 3 set × 15, günaşırı.' },
+        { t: 'Theraband iç rotasyon', d: '3 set × 15, günaşırı.' },
+        { t: 'Theraband kürek çekme', d: 'Skapula stabilitesi için. 3 set × 15.' },
+        { t: 'Skapula sıkıştırma', d: 'Gün boyu otururken bile.' },
+        { t: 'Tam hareket açıklığı', d: 'Yavaşça kolu tüm yönlere açabilirsin.' }
+      ],
+      dont: [
+        { t: 'Bench press, omuz pressi', d: 'Henüz yok.' },
+        { t: 'Şınav, dips, pull-up', d: 'Henüz yok.' },
+        { t: 'Düşme riskli aktiviteler', d: 'Bisiklet OK ama trafikte değil.' },
+        { t: 'Temaslı spor', d: 'Henüz yok, minimum 4. aydan sonra.' }
+      ]
+    },
+    {
+      id: 4,
+      name: 'Kuvvetlendirme — ileri',
+      meta: 'Kolajen lifleri hareket yönüne hizalanıyor. Propriosepsiyon ve fonksiyonel kuvvet dönemi. Spor öncesi son hazırlık.',
+      range: [90, 180],
+      rangeLabel: '3 — 6. ay',
+      do: [
+        { t: 'Theraband programını ilerlet', d: 'Daha sert lastik, daha çok set.' },
+        { t: 'Vücut ağırlığı ile çalış', d: 'Yarım plank, modifiye şınav (duvarda).' },
+        { t: 'Yüzme (sınırlı)', d: 'Serbest stil OK, kurbağa/sırtüstü dikkatli.' },
+        { t: 'Propriosepsiyon', d: 'Pilates topu üzerinde el desteği, denge çalışması.' }
+      ],
+      dont: [
+        { t: 'Maksimal yüklenmeler', d: 'Henüz ağır halter yok.' },
+        { t: 'Temaslı / havaya kaldıran sporlar', d: 'Voleybol, basketbol, tenis servisi.' },
+        { t: 'Atış hareketleri', d: 'Pas atma, top atma henüz yok.' }
+      ]
+    },
+    {
+      id: 5,
+      name: 'Olgunlaşma ve döngü tamamlama',
+      meta: 'Kapsül daralıyor, doku sınır gücüne oturuyor. Doğru kas korsesi kurulduysa omuz fonksiyonel olarak stabil.',
+      range: [180, 365],
+      rangeLabel: '6 — 12. ay',
+      do: [
+        { t: 'Tam kuvvet programı', d: 'Şınav, omuz pressi yavaşça programa.' },
+        { t: 'Spora dönüş', d: 'Doktor onayıyla. Temaslı spor en erken 6. ay.' },
+        { t: 'İdame egzersizleri', d: 'Theraband dış rotasyon haftada 2-3 kez ömür boyu.' },
+        { t: 'Kontrol', d: '6. ve 12. ay ortopedi kontrolü, gerekirse MR.' }
+      ],
+      dont: [
+        { t: 'Aşırı güven', d: 'Bir yıl sonra bile dış rotasyon + yüksek kol riskli.' },
+        { t: 'Stabilizasyon egzersizlerini bırakma', d: 'Bunlar artık ömür boyu rutin.' }
+      ]
+    }
+  ];
+
+  function getCurrentPhase(day) {
+    for (const p of phases) {
+      if (day >= p.range[0] && day < p.range[1]) return p;
+    }
+    return phases[phases.length - 1];
+  }
+
+  // ===== RENDER =====
+  function render() {
+    const pct = calcRecovery(currentDay);
+    const phase = getCurrentPhase(currentDay);
+
+    // Hero
+    document.getElementById('phase-name').textContent = phase.name;
+    document.getElementById('phase-desc').textContent = phase.meta;
+    document.getElementById('day-number').innerHTML = `${currentDay}<span class="stat-suffix">. günü</span>`;
+    document.getElementById('day-date').textContent = trFormatDate(t);
+
+    // Arc
+    const circumference = 2 * Math.PI * 44;
+    const offset = circumference - (pct / 100) * circumference;
+    document.getElementById('arc-fg').style.strokeDashoffset = offset;
+    document.getElementById('arc-pct').textContent = pct.toFixed(1) + '%';
+    document.getElementById('arc-headline').textContent = phase.rangeLabel;
+
+    // Italy
+    renderItaly();
+
+    // Plan
+    const planDo = document.getElementById('plan-do');
+    const planDont = document.getElementById('plan-dont');
+    planDo.innerHTML = phase.do.map(x => `<li><strong>${x.t}</strong>${x.d}</li>`).join('');
+    planDont.innerHTML = phase.dont.map(x => `<li><strong>${x.t}</strong>${x.d}</li>`).join('');
+
+    // Check-in
+    renderCheckin();
+
+    // Stats
+    renderStats();
+
+    // Calendar
+    renderCalendar();
+
+    // Timeline
+    renderTimeline();
+  }
+
+  function renderItaly() {
+    const card = document.getElementById('italy-card');
+    const status = document.getElementById('italy-status');
+    const headline = document.getElementById('italy-headline');
+    const detail = document.getElementById('italy-detail');
+
+    const daysUntilItaly = daysBetween(t, italyStart);
+    const daysUntilItalyEnd = daysBetween(t, italyEnd);
+
+    card.classList.remove('during');
+
+    if (daysUntilItaly > 0) {
+      status.textContent = `İtalya'ya ${daysUntilItaly} gün`;
+      headline.textContent = 'Hazırlık dönemi';
+      detail.textContent = 'Omuzluğu ve yumuşak kol askısını valize koy. Ağır valiz yok — sağ el için hafif çekme bavul ideal. Uçakta valizi üst gözden indirme — yardım iste.';
+    } else if (daysUntilItalyEnd >= 0) {
+      card.classList.add('during');
+      const dayInTrip = -daysUntilItaly + 1;
+      const totalDays = daysBetween(italyStart, italyEnd) + 1;
+      status.textContent = `Roma · Floransa · ${dayInTrip}/${totalDays}. gün`;
+      headline.textContent = 'Koruma modunda gez';
+      detail.textContent = 'Omuzluk takılı. Sol kolla kapı çekme, valiz taşıma, yüksek raf yok. İzometrik egzersizleri otel odasında yapabilirsin — sarkaç ve duvar yürütme bekleyebilir, döndüğünde başla. Sevgilinle tatilin tadını çıkar.';
+    } else {
+      status.textContent = 'İtalya tamamlandı';
+      headline.textContent = 'Programa kaldığın yerden devam';
+      detail.textContent = 'Hoş geldin. Faz egzersizlerini bugünden itibaren takvimine al. Bir hafta atlamak hiçbir şeyi geriye atmaz.';
+    }
+  }
+
+  function renderCheckin() {
+    const todayKey = ymd(t);
+    document.getElementById('checkin-date').textContent = todayKey;
+    const existing = state.logs[todayKey] || {};
+
+    const slider = document.getElementById('pain-slider');
+    slider.value = existing.pain ?? 0;
+    document.getElementById('pain-value').textContent = slider.value;
+
+    // Toggle button states
+    setToggleState('exercise-toggle', existing.exercises);
+    setToggleState('protein-toggle', existing.protein);
+
+    document.getElementById('notes-input').value = existing.notes || '';
+  }
+
+  function setToggleState(groupId, val) {
+    const buttons = document.querySelectorAll(`#${groupId} .toggle-btn`);
+    buttons.forEach(b => {
+      b.classList.toggle('active', b.dataset.val === val);
+    });
+  }
+
+  function renderStats() {
+    const dates = Object.keys(state.logs).sort();
+    document.getElementById('stat-total').textContent = dates.length;
+
+    // Streak: consecutive days up to today with exercises = yes/partial
+    let streak = 0;
+    let d = new Date(t);
+    while (true) {
+      const key = ymd(d);
+      const log = state.logs[key];
+      if (log && (log.exercises === 'yes' || log.exercises === 'partial')) {
+        streak++;
+        d.setDate(d.getDate() - 1);
+      } else break;
+    }
+    document.getElementById('stat-streak').textContent = streak;
+
+    // Average pain
+    const pains = dates.map(k => state.logs[k].pain).filter(p => typeof p === 'number');
+    if (pains.length > 0) {
+      const avg = pains.reduce((a,b) => a+b, 0) / pains.length;
+      document.getElementById('stat-avg-pain').textContent = avg.toFixed(1);
+    } else {
+      document.getElementById('stat-avg-pain').textContent = '—';
+    }
+  }
+
+  function renderCalendar() {
+    const grid = document.getElementById('cal-grid');
+    grid.innerHTML = '';
+    // Show last 56 days (8 weeks)
+    const days = 56;
+    const start = new Date(t);
+    start.setDate(start.getDate() - (days - 1));
+
+    for (let i = 0; i < days; i++) {
+      const d = new Date(start);
+      d.setDate(start.getDate() + i);
+      const key = ymd(d);
+      const cell = document.createElement('div');
+      cell.className = 'cal-cell';
+
+      if (d > t) cell.classList.add('future');
+      if (key === ymd(t)) cell.classList.add('today');
+
+      // Italy range
+      if (d >= italyStart && d <= italyEnd) cell.classList.add('italy');
+
+      const log = state.logs[key];
+      if (log) {
+        if (log.exercises === 'yes' || log.exercises === 'partial') cell.classList.add('done');
+        else if (log.exercises === 'no') cell.classList.add('skipped');
+      }
+
+      cell.textContent = d.getDate();
+      cell.title = trFormatDate(d) + (log ? ` · ağrı ${log.pain ?? '-'}` : '');
+      grid.appendChild(cell);
+    }
+  }
+
+  function renderTimeline() {
+    const track = document.getElementById('tl-track');
+    track.innerHTML = '';
+    phases.forEach(p => {
+      const isActive = currentDay >= p.range[0] && currentDay < p.range[1];
+      const isPast = currentDay >= p.range[1];
+      const cls = isActive ? 'active' : (isPast ? 'past' : '');
+      const phaseEl = document.createElement('div');
+      phaseEl.className = `tl-phase ${cls}`;
+      phaseEl.innerHTML = `
+        <span class="tl-dot"></span>
+        <div class="tl-meta">Faz ${p.id}</div>
+        <h3 class="tl-name serif">${p.name}</h3>
+        <p class="tl-desc">${p.meta}</p>
+        <div class="tl-range">${p.rangeLabel}</div>
+      `;
+      track.appendChild(phaseEl);
+    });
+  }
+
+  // ===== EVENT HANDLERS =====
+  document.getElementById('pain-slider').addEventListener('input', (e) => {
+    document.getElementById('pain-value').textContent = e.target.value;
+  });
+
+  document.querySelectorAll('#exercise-toggle .toggle-btn').forEach(b => {
+    b.addEventListener('click', () => setToggleState('exercise-toggle', b.dataset.val));
+  });
+  document.querySelectorAll('#protein-toggle .toggle-btn').forEach(b => {
+    b.addEventListener('click', () => setToggleState('protein-toggle', b.dataset.val));
+  });
+
+  document.getElementById('save-btn').addEventListener('click', () => {
+    const todayKey = ymd(t);
+    const exerciseBtn = document.querySelector('#exercise-toggle .toggle-btn.active');
+    const proteinBtn = document.querySelector('#protein-toggle .toggle-btn.active');
+    state.logs[todayKey] = {
+      pain: parseInt(document.getElementById('pain-slider').value, 10),
+      exercises: exerciseBtn ? exerciseBtn.dataset.val : null,
+      protein: proteinBtn ? proteinBtn.dataset.val : null,
+      notes: document.getElementById('notes-input').value.trim(),
+      savedAt: new Date().toISOString()
+    };
+    saveState();
+    showToast('Bugün için kaydedildi');
+    renderStats();
+    renderCalendar();
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    if (confirm('Tüm günlük kayıtlar silinecek. Emin misin?')) {
+      state = { logs: {} };
+      saveState();
+      render();
+      showToast('Kayıtlar silindi');
+    }
+  });
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  }
+
+  // Initial render
+  render();
+})();
+</script>
+
+</body>
+</html>
