@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sol Omuz Biyolojik Onarım Firewall v1.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.02); }
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen font-sans antialiased selection:bg-indigo-500 selection:text-white">
+
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-gray-800 pb-6 mb-8 gap-4">
+            <div>
+                <h1 class="text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
+                    Sol Omuz Onarım Dashboard
+                </h1>
+                <p class="text-gray-400 text-sm mt-1">Sistem Başlangıcı: 2 Mayıs 2026 | Biyolojik Hedef: %80 Sağlamlık</p>
+            </div>
+            <div id="live-clock" class="text-xs font-mono bg-gray-900 border border-gray-800 px-3 py-1.5 rounded-md text-indigo-400 shadow-inner">
+                Sistem Zamanı Aktif
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <div class="md:col-span-1 bg-gray-900 border border-gray-800 rounded-xl p-6 flex flex-col items-center justify-center text-center relative overflow-hidden">
+                <div class="absolute inset-0 bg-indigo-500/5 mix-blend-color-dodge pointer-events-none"></div>
+                
+                <h2 class="text-sm font-semibold tracking-wider text-gray-400 uppercase mb-4">Mevcut Biyolojik Durum</h2>
+                
+                <div class="relative w-40 h-40 flex items-center justify-center">
+                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                        <circle class="text-gray-800" stroke-width="6" stroke="currentColor" fill="transparent" r="42" cx="50" cy="50"/>
+                        <circle id="progress-circle" class="text-indigo-500 transition-all duration-1000 ease-out" stroke-width="6" stroke-dasharray="263.8" stroke-dashoffset="263.8" stroke-linecap="round" stroke="currentColor" fill="transparent" r="42" cx="50" cy="50"/>
+                    </svg>
+                    <div class="absolute flex flex-col items-center">
+                        <span id="pct-display" class="text-4xl font-black tracking-tight text-white">0%</span>
+                        <span id="days-display" class="text-xs text-indigo-300 font-mono mt-0.5">0. Gün</span>
+                    </div>
+                </div>
+
+                <div class="mt-6 w-full">
+                    <div id="caution-badge" class="px-3 py-2 rounded-lg text-xs font-bold tracking-widest uppercase animate-pulse-slow">
+                        Hesaplanıyor...
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:col-span-2 space-y-6">
+                <div id="italy-alert" class="hidden bg-gradient-to-r from-amber-950 to-orange-900/60 border border-amber-800/60 rounded-xl p-4 flex items-center gap-4">
+                    <div class="p-2 bg-amber-900/50 text-amber-400 rounded-lg text-xl">🇮🇹</div>
+                    <div>
+                        <h3 class="text-sm font-bold text-amber-200">Kritik Bölge: İtalya Seyahati Aktif!</h3>
+                        <p class="text-xs text-amber-400/90 mt-0.5">Roma ve Floransa sokaklarındasın. İnce örme omuzluğunu asla çıkarma. Valizleri kesinlikle sağ elinle yönet.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
+                        <span class="text-xs text-gray-400 block mb-1">Kalan Biyolojik Süre</span>
+                        <span id="countdown-display" class="text-xl font-bold font-mono text-gray-200">--- Gün</span>
+                    </div>
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
+                        <span class="text-xs text-gray-400 block mb-1">Mevcut Evre</span>
+                        <span id="phase-name-display" class="text-sm font-bold text-indigo-400 block truncate">---</span>
+                    </div>
+                </div>
+
+                <div class="bg-gray-900 border border-gray-800 rounded-xl p-5">
+                    <h3 class="text-sm font-bold tracking-wider text-gray-300 uppercase mb-3 border-b border-gray-800 pb-2">Aktif Davranış Algoritması (Hardcoded Rules)</h3>
+                    <ul class="space-y-2.5 text-xs text-gray-400">
+                        <li class="flex items-start gap-2.5">
+                            <span class="text-red-400 font-bold">🚫</span>
+                            <span><strong>Yasaklı Açı Kesmesi:</strong> Sol dirsek 90 dereceyken elin havaya ve arkaya gitmesi ("çak bir beşlik" pozisyonu) yazılımsal olarak engellendi.</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <span class="text-indigo-400 font-bold">👕</span>
+                            <span><strong>Giyim Sıralaması:</strong> Giyerken önce SOL kol, sonra sağ kol. Çıkarırken önce SAĞ kol, en son sol kol.</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <span class="text-amber-400 font-bold">🚗</span>
+                            <span><strong>Arka Koltuk Refleksi:</strong> Sürücü veya yolcu koltuğundayken sol elle arkaya uzanmak kesinlikle yasak. Gövdenle döneceksin.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 bg-gray-900 border border-gray-800 rounded-xl p-6">
+            <h3 class="text-sm font-bold tracking-wider text-gray-300 uppercase mb-4">1 Yıllık Biyolojik Derleme Hattı</h3>
+            <div class="relative pl-6 border-l-2 border-gray-800 space-y-6 text-xs">
+                <div id="timeline-p1" class="relative">
+                    <div class="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-gray-800 border-4 border-gray-950 transition-colors duration-300"></div>
+                    <h4 class="font-bold text-gray-200">Evre 1: Pamuk İpliği Dönemi (0 - 6. Hafta)</h4>
+                    <p class="text-gray-400 mt-1">Doku esnek Tip 3 kolajenle örülüyor. Sağlamlık: %0 - %20. Defans maksimumda olmalı.</p>
+                </div>
+                <div id="timeline-p2" class="relative">
+                    <div class="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-gray-800 border-4 border-gray-950 transition-colors duration-300"></div>
+                    <h4 class="font-bold text-gray-200">Evre 2: Yara Dokusu Oluşumu (6. Hafta - 3. Ay)</h4>
+                    <p class="text-gray-400 mt-1">Tip 1 güçlü kolajen lifleri bağlanıyor. Sağlamlık: %20 - %50. Hafif izometrik hareketler.</p>
+                </div>
+                <div id="timeline-p3" class="relative">
+                    <div class="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-gray-800 border-4 border-gray-950 transition-colors duration-300"></div>
+                    <h4 class="font-bold text-gray-200">Evre 3: Lif Hizalanması (3 - 6. Ay)</h4>
+                    <p class="text-gray-400 mt-1">Kolajen ağları hareket yönüne göre hizalanıyor. Sağlamlık: %50 - %70. Fizik tedavi ağırlıklı.</p>
+                </div>
+                <div id="timeline-p4" class="relative">
+                    <div class="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-gray-800 border-4 border-gray-950 transition-colors duration-300"></div>
+                    <h4 class="font-bold text-gray-200">Evre 4: Olgunlaşma ve Kilitlenme (6 - 12. Ay)</h4>
+                    <p class="text-gray-400 mt-1">Kapsül daralıyor, doku sınır gücüne oturuyor. Sağlamlık: %70 - %80. Ameliyat masadan tamamen kalkıyor.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Core inputs
+            const injuryDate = new Date('2026-05-02T00:00:00');
+            const targetDays = 365;
+
+            function updateTracker() {
+                const now = new Date();
+                
+                // Update live clock
+                document.getElementById('live-clock').innerText = `Sistem Zamanı: ${now.toLocaleString('tr-TR')}`;
+                
+                // Calculate time delta
+                const diffTime = now - injuryDate;
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                
+                // Clamp days to maximum 365
+                const currentDay = Math.min(Math.max(0, diffDays), targetDays);
+                const daysRemaining = Math.max(0, targetDays - currentDay);
+                
+                document.getElementById('days-display').innerText = `${currentDay}. Gündesin`;
+                document.getElementById('countdown-display').innerText = `${daysRemaining} Gün Kaldı`;
+
+                // Calculate multi-phase biological percentage (Target: 80% max at day 365)
+                let pct = 0;
+                let phaseName = "";
+                let cautionLevel = "";
+                let badgeStyle = "";
+
+                if (currentDay <= 42) { // 0 - 6 Weeks (0% to 20%)
+                    pct = (currentDay / 42) * 20;
+                    phaseName = "Evre 1: Pamuk İpliği";
+                    cautionLevel = "Maksimum Defans (Aşırı Kritik)";
+                    badgeStyle = "bg-red-950 text-red-400 border border-red-800";
+                    document.getElementById('timeline-p1').querySelector('div').classList.add('bg-red-500');
+                } else if (currentDay <= 90) { // 6 Weeks - 3 Months (20% to 50%)
+                    pct = 20 + ((currentDay - 42) / (90 - 42)) * 30;
+                    phaseName = "Evre 2: Yara Dokusu Sentezi";
+                    cautionLevel = "Yüksek Dikkat (Kontrollü Mobilite)";
+                    badgeStyle = "bg-orange-950 text-orange-400 border border-orange-800";
+                    document.getElementById('timeline-p2').querySelector('div').classList.add('bg-orange-500');
+                } else if (currentDay <= 180) { // 3 - 6 Months (50% to 70%)
+                    pct = 50 + ((currentDay - 90) / (180 - 90)) * 20;
+                    phaseName = "Evre 3: Lif Hizalanması";
+                    cautionLevel = "Orta Seviye (Fizik Tedavi ve Güçlenme)";
+                    badgeStyle = "bg-yellow-950 text-yellow-400 border border-yellow-800";
+                    document.getElementById('timeline-p3').querySelector('div').classList.add('bg-yellow-500');
+                } else { // 6 - 12 Months (70% to 80%)
+                    pct = 70 + ((currentDay - 180) / (365 - 180)) * 10;
+                    phaseName = "Evre 4: Olgunlaşma ve Kilitlenme";
+                    cautionLevel = "Güvenli Bölce (Kas Korsesi Sabitlemesi)";
+                    badgeStyle = "bg-green-950 text-green-400 border border-green-800";
+                    document.getElementById('timeline-p4').querySelector('div').classList.add('bg-green-500');
+                }
+
+                // Format percentage for display
+                const formattedPct = pct.toFixed(2);
+                document.getElementById('pct-display').innerText = `${formattedPct}%`;
+                document.getElementById('phase-name-display').innerText = phaseName;
+                
+                // Update Badge
+                const badge = document.getElementById('caution-badge');
+                badge.innerText = `Sinyal: ${cautionLevel}`;
+                badge.className = `px-3 py-2 rounded-lg text-xs font-bold tracking-widest uppercase animate-pulse-slow ${badgeStyle}`;
+
+                // Update SVG Circle Progress
+                const circle = document.getElementById('progress-circle');
+                const radius = circle.r.baseVal.value;
+                const circumference = radius * 2 * Math.PI;
+                // Map the percentage from 0-100 scale based on the 80% maximum boundary
+                const strokeDashoffset = circumference - (pct / 100) * circumference;
+                circle.style.strokeDashoffset = strokeDashoffset;
+
+                // Dynamic Widget Trigger: Italy Trip Check (May 22 - May 29, 2026)
+                // Day index representation: May 2 is Day 0. May 22 is Day 20. May 29 is Day 27.
+                if (currentDay >= 20 && currentDay <= 27) {
+                    document.getElementById('italy-alert').classList.remove('hidden');
+                } else {
+                    document.getElementById('italy-alert').classList.add('hidden');
+                }
+            }
+
+            // Run on load and set process interval
+            updateTracker();
+            setInterval(updateTracker, 1000);
+        });
+    </script>
+</body>
+</html>
